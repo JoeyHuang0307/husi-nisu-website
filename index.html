@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>匠心燎原 — 胡氏泥塑非遗文创</title>
+<style>
+:root {
+  --primary: #1a365d;
+  --primary-light: #2c5282;
+  --accent: #c9a96e;
+  --accent-light: #d4b87a;
+  --bg: #f8f6f3;
+  --card-bg: #fff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --shadow: 0 4px 24px rgba(0,0,0,.08);
+  --shadow-hover: 0 8px 32px rgba(0,0,0,.12);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: "PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.7;
+}
+.nav {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  background: rgba(26,54,93,.95); backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); padding: 0 24px;
+  transition: all .3s ease; box-shadow: 0 2px 20px rgba(0,0,0,.1);
+}
+.nav.scrolled { background: rgba(26,54,93,.98); }
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; height: 64px;
+}
+.nav-logo { font-size: 1.3rem; font-weight: 700; color: var(--accent); letter-spacing: 3px; text-decoration: none; }
+.nav-links { display: flex; gap: 8px; list-style: none; }
+.nav-links a {
+  color: rgba(255,255,255,.8); text-decoration: none; font-size: .9rem;
+  padding: 8px 14px; border-radius: 8px; transition: all .3s ease;
+}
+.nav-links a:hover, .nav-links a.active { color: #fff; background: rgba(201,169,110,.2); }
+.nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+@media(max-width:768px) {
+  .nav-links {
+    position: fixed; top: 64px; left:0; right:0; background: rgba(26,54,93,.98);
+    flex-direction: column; padding: 16px; transform: translateY(-120%); transition: transform .3s ease;
+  }
+  .nav-links.open { transform: translateY(0); }
+  .nav-toggle { display: block; }
+}
+.hero {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--primary) 0%, #0f2744 100%);
+  position: relative; overflow: hidden; text-align: center; padding: 80px 24px;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(201,169,110,.15) 0%, transparent 60%),
+              radial-gradient(circle at 70% 80%, rgba(201,169,110,.1) 0%, transparent 50%);
+}
+.hero-content { position: relative; z-index:1; }
+.hero h1 { font-size: clamp(2.5rem,6vw,4.5rem); color: #fff; font-weight: 800; letter-spacing: 8px; margin-bottom: 16px; text-shadow: 0 4px 20px rgba(0,0,0,.3); }
+.hero h1 span { color: var(--accent); }
+.hero .subtitle { font-size: clamp(1rem,2vw,1.3rem); color: rgba(255,255,255,.7); letter-spacing: 4px; margin-bottom: 40px; }
+.hero .cta {
+  display: inline-block; padding: 14px 40px; background: var(--accent); color: var(--primary);
+  border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1rem;
+  letter-spacing: 2px; transition: all .3s ease; box-shadow: 0 4px 20px rgba(201,169,110,.3);
+}
+.hero .cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,169,110,.4); background: var(--accent-light); }
+.hero-scroll { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,.5); font-size: .8rem; letter-spacing: 2px; animation: bounce 2s infinite; }
+@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+.section { padding: 100px 24px; max-width: 1200px; margin: 0 auto; }
+.section-header { text-align: center; margin-bottom: 60px; }
+.section-header h2 { font-size: clamp(1.8rem,3vw,2.5rem); color: var(--primary); font-weight: 700; margin-bottom: 12px; letter-spacing: 3px; }
+.section-header .line { width: 60px; height: 3px; background: var(--accent); margin: 16px auto; border-radius: 2px; }
+.section-header p { color: var(--text-light); font-size: 1rem; max-width: 600px; margin: 0 auto; }
+.search-wrap { max-width: 480px; margin: 0 auto 32px; position: relative; }
+.search-wrap input { width: 100%; padding: 12px 20px 12px 44px; border: 2px solid #e2e8f0; border-radius: 50px; font-size: .95rem; outline: none; transition: border-color .3s; background: #fff; }
+.search-wrap input:focus { border-color: var(--accent); }
+.search-wrap .icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; opacity: .4; }
+.product-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+@media(max-width:1024px) { .product-grid { grid-template-columns: repeat(3,1fr); } }
+@media(max-width:768px) { .product-grid { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:480px) { .product-grid { grid-template-columns: 1fr; } }
+.card { background: var(--card-bg); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all .3s ease; cursor: pointer; }
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.card img { width: 100%; aspect-ratio: 1; object-fit: cover; transition: transform .5s ease; }
+.card:hover img { transform: scale(1.05); }
+.card h3 { padding: 16px 16px 6px; font-size: .95rem; color: var(--primary); font-weight: 600; }
+.card p { padding: 0 16px 16px; font-size: .82rem; color: var(--text-light); line-height: 1.5; }
+.heritage-content h3 { font-size: 1.3rem; color: var(--primary); margin: 32px 0 12px; padding-left: 16px; border-left: 4px solid var(--accent); }
+.heritage-content p { color: var(--text); line-height: 1.9; margin-bottom: 16px; text-indent: 2em; }
+.master-card { display: flex; gap: 32px; margin-top: 40px; background: #fff; border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow); align-items: flex-start; }
+.master-card img { width: 240px; border-radius: var(--radius-sm); object-fit: cover; flex-shrink: 0; }
+.master-info h4 { font-size: 1.4rem; color: var(--primary); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--accent); }
+.master-info ul { list-style: none; padding: 0; }
+.master-info li { padding: 6px 0 6px 20px; position: relative; font-size: .92rem; color: var(--text); }
+.master-info li::before { content: '◆'; position: absolute; left: 0; color: var(--accent); font-size: .7rem; top: 9px; }
+.master-info .highlight { margin-top: 16px; padding: 12px 16px; background: rgba(201,169,110,.08); border-radius: var(--radius-sm); font-size: .9rem; color: var(--primary); font-style: italic; text-indent: 0; }
+@media(max-width:768px) { .master-card { flex-direction: column; } .master-card img { width: 100%; max-height: 300px; } }
+.section-desc { text-align: center; font-size: 1.1rem; color: var(--primary); font-weight: 600; margin-bottom: 8px; }
+.team-text { max-width: 800px; margin: 24px auto 40px; background: #fff; padding: 32px; border-radius: var(--radius); box-shadow: var(--shadow); }
+.team-text p { margin-bottom: 16px; text-indent: 2em; }
+.team-gallery { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+.team-gallery img { width: 100%; border-radius: var(--radius-sm); aspect-ratio: 3/4; object-fit: cover; box-shadow: var(--shadow); transition: transform .3s; }
+.team-gallery img:hover { transform: scale(1.03); }
+@media(max-width:768px) { .team-gallery { grid-template-columns: repeat(2,1fr); } }
+.practice-block { background: #fff; padding: 32px; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 24px; }
+.practice-block h3 { color: var(--primary); margin-bottom: 16px; font-size: 1.2rem; }
+.practice-block p { text-indent: 2em; margin-bottom: 12px; }
+.service-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-top: 20px; }
+.service-card { text-align: center; padding: 24px 16px; background: var(--bg); border-radius: var(--radius-sm); transition: all .3s; }
+.service-card:hover { background: rgba(201,169,110,.1); transform: translateY(-2px); }
+.service-icon { font-size: 2rem; display: block; margin-bottom: 12px; }
+.service-card h4 { color: var(--primary); font-size: .95rem; margin-bottom: 8px; }
+.service-card p { font-size: .82rem; color: var(--text-light); text-indent: 0; }
+.practice-slogan { text-align: center; font-size: 1.3rem; color: var(--primary); font-weight: 700; margin: 40px 0; letter-spacing: 2px; }
+.practice-gallery { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+.practice-gallery img { width: 100%; border-radius: var(--radius-sm); aspect-ratio: 4/3; object-fit: cover; box-shadow: var(--shadow); }
+@media(max-width:768px) { .service-grid { grid-template-columns: repeat(2,1fr); } .practice-gallery { grid-template-columns: repeat(2,1fr); } }
+.value-cards { display: grid; grid-template-columns: repeat(2,1fr); gap: 32px; }
+.value-card { background: #fff; padding: 48px 36px; border-radius: var(--radius); box-shadow: var(--shadow); text-align: center; transition: all .3s; border-top: 4px solid var(--accent); }
+.value-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.value-icon { font-size: 3rem; margin-bottom: 20px; }
+.value-card h3 { color: var(--primary); font-size: 1.4rem; margin-bottom: 16px; }
+.value-card p { color: var(--text-light); line-height: 1.9; text-indent: 2em; text-align: left; }
+@media(max-width:768px) { .value-cards { grid-template-columns: 1fr; } }
+.contact-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-bottom: 32px; }
+.contact-card { background: #fff; padding: 36px 24px; border-radius: var(--radius); box-shadow: var(--shadow); text-align: center; transition: all .3s; }
+.contact-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.contact-icon { font-size: 2.5rem; margin-bottom: 16px; }
+.contact-card h4 { color: var(--primary); font-size: 1rem; margin-bottom: 8px; }
+.contact-card p { color: var(--accent); font-size: 1.2rem; font-weight: 600; letter-spacing: 1px; }
+.contact-note { text-align: center; color: var(--text-light); font-size: .9rem; margin-top: 16px; }
+@media(max-width:768px) { .contact-cards { grid-template-columns: 1fr; } }
+.footer { background: var(--primary); color: rgba(255,255,255,.6); text-align: center; padding: 32px 24px; font-size: .85rem; letter-spacing: 1px; }
+.fade-in { opacity: 0; transform: translateY(30px); transition: opacity .6s ease, transform .6s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+.modal-overlay.active { display: flex; }
+.modal { background: #fff; border-radius: var(--radius); max-width: 480px; width: 90%; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+.modal img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+.modal-body { padding: 24px; }
+.modal-body h3 { color: var(--primary); margin-bottom: 12px; font-size: 1.3rem; }
+.modal-body p { color: var(--text-light); line-height: 1.8; }
+.modal-close { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,.5); color: #fff; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; transition: background .3s; }
+.modal-close:hover { background: rgba(0,0,0,.8); }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav"><div class="nav-inner">
+<a href="#hero" class="nav-logo">匠心燎原</a>
+<button class="nav-toggle" id="navToggle">☰</button>
+<ul class="nav-links" id="navLinks">
+<li><a href="#products">产品介绍</a></li><li><a href="#heritage">非遗介绍</a></li>
+<li><a href="#team">团队介绍</a></li><li><a href="#practice">实践活动</a></li>
+<li><a href="#value">社会价值</a></li><li><a href="#contact">联系我们</a></li>
+</ul></div></nav>
+
+<section class="hero" id="hero"><div class="hero-content">
+<h1>匠心<span>燎原</span></h1>
+<p class="subtitle">胡氏泥塑 · 非遗文创 · 薪火相传</p>
+<a href="#products" class="cta">探索作品</a>
+</div><div class="hero-scroll">↓ 向下滚动</div></section>
+
+<section class="section" id="products">
+<div class="section-header fade-in"><h2>产品介绍</h2><div class="line"></div><p>每一件作品，都是匠人指尖的温度</p></div>
+<div class="search-wrap fade-in"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+<input type="text" id="searchInput" placeholder="搜索产品名称..." /></div>
+<div class="product-grid fade-in" id="productGrid"></div></section>
+
+<section class="section" id="heritage">
+<div class="section-header fade-in"><h2>非遗介绍</h2><div class="line"></div><p>千年泥塑，薪火相传</p></div>
+<div class="heritage-content fade-in">
+<h3>非遗泥塑</h3>
+<p>泥塑，是我国历史最悠久的民间传统手工技艺之一，最早可追溯至新石器时代。2006年，泥塑正式入选第一批国家级非物质文化遗产名录，是扎根民间、承载千年民俗的活态传统文化。中华泥塑流派众多、各具风情，北方泥塑厚重质朴，江南泥塑灵动精巧，各地匠人以土为材、以手为器，将地域风俗、生活百态与人文情思凝于方寸泥身，成为中华民间艺术不可或缺的重要载体。</p>
+<h3>胡氏泥塑</h3>
+<p>胡氏泥塑是自贡极具代表性的本土非遗泥塑技艺，世代扎根川南民间。依托自贡本土文化特色，胡氏泥塑深耕恐龙、彩灯、盐帮民俗、国风雅致等多元题材，兼顾传统古韵与现代审美。</p>
+<div class="master-card">
+<img src="图片/图片1.png" alt="胡伟康" loading="lazy" />
+<div class="master-info"><h4>胡伟康</h4><ul>
+<li>自贡市非遗胡氏泥塑第四代传承人</li>
+<li>中国民间文艺家协会会员</li>
+<li>四川省民间文艺家协会会员</li>
+<li>四川省农村手工艺大师</li>
+<li>四川省乡村工匠名师</li>
+<li>四川省乡土文化能人</li>
+<li>四川省乡村文化和旅游能人</li>
+<li>自贡市非物质文化遗产保护协会委员</li>
+<li>四川省首批"五匠+"乡村艺人精品培训班学员</li>
+<li>自贡市青年联合会第十四届委员会委员</li>
+</ul><p class="highlight">其作品被中国知网、青春自贡、四川观察、成都市广播电视《深度观察》栏目等多方报道。</p></div></div>
+</div></section>
+
+<section class="section" id="team">
+<div class="section-header fade-in"><h2>团队介绍</h2><div class="line"></div><p>以非遗技艺为纽带，注入青春力量</p></div>
+<div class="fade-in">
+<p class="section-desc">非遗匠心燎原队</p>
+<p class="section-desc">指导老师：叶绿、卿利</p>
+<p class="section-desc">团队成员：刘娅玲、李海雄、陆本湘、赵星宇、黄佳怡</p>
+<div class="team-text">
+<p>本团队由高校青年学子组建，聚力深耕本土非遗事业。我们拥有专业老师指导以及非遗传承人支持。团队成立不仅为传承弘扬泥塑非遗文化，守护胡氏泥塑传统技艺，更携手非遗传承人共助零工就业。</p>
+<p>我们旨在面向临零工群体普及泥塑技艺，开展技能教学培训，帮助大家掌握实用手艺，拓宽增收渠道，点亮基层群体就业增收梦想。</p>
+<p>团队依托自身优势整合资源，以非遗技艺为纽带，将文化传承与民生帮扶相结合，以实践行动助力群众稳就业、增收入，以非遗产业赋能地方发展，切实为乡村振兴事业注入青春力量。</p>
+</div>
+<div class="team-gallery">
+<img src="图片/图片2.png" alt="团队风采1" loading="lazy" />
+<img src="图片/图片3.png" alt="团队风采2" loading="lazy" />
+<img src="图片/图片4.png" alt="团队风采3" loading="lazy" />
+<img src="图片/图片5.png" alt="团队风采4" loading="lazy" />
+</div></div></section>
+
+<section class="section" id="practice">
+<div class="section-header fade-in"><h2>实践活动</h2><div class="line"></div><p>传承指尖文脉，我们一直在行动</p></div>
+<div class="fade-in">
+<div class="practice-block"><h3>从团队创立到现在，我们做了什么?</h3>
+<p>2025年9月，团队调研发现非遗传承与就业困境，随后走访对接胡伟康老师达成合作授权，搭建线上平台宣传推广。</p>
+<p>2026年团队深入社区，开设网店拓展销路，参与线下市集获多方认可。后续积极联动文旅资源，开展直播引流，多元发力传承非遗文化，助力民众就业增收。</p></div>
+<div class="practice-block"><h3>我们能做什么？（可提供服务）</h3>
+<div class="service-grid">
+<div class="service-card"><span class="service-icon">🏺</span><h4>非遗产品合作</h4><p>泥塑定制、批量采购、联名开发</p></div>
+<div class="service-card"><span class="service-icon">📱</span><h4>非遗宣传推广</h4><p>新媒体运营、直播带货、品牌策划</p></div>
+<div class="service-card"><span class="service-icon">🎓</span><h4>泥塑技能培训</h4><p>线下体验、线上教学、零工技能帮扶</p></div>
+<div class="service-card"><span class="service-icon">🎪</span><h4>非遗活动合作</h4><p>市集、团建、校园活动体验/展示</p></div>
+</div></div>
+<p class="practice-slogan">传承指尖文脉，助力乡村振兴。<br/>我们，在行动！</p>
+<div class="practice-gallery">
+<img src="图片/图片6.png" alt="实践活动1" loading="lazy" />
+<img src="图片/图片7.png" alt="实践活动2" loading="lazy" />
+<img src="图片/图片8.png" alt="实践活动3" loading="lazy" />
+<img src="图片/图片9.png" alt="实践活动4" loading="lazy" />
+</div></div></section>
+
+<section class="section" id="value">
+<div class="section-header fade-in"><h2>社会价值</h2><div class="line"></div><p>文化传承与民生振兴的双向奔赴</p></div>
+<div class="fade-in"><div class="value-cards">
+<div class="value-card"><div class="value-icon">🏮</div><h3>文化传承</h3>
+<p>项目深耕本土非遗文化，守护胡氏泥塑传统技艺，深挖盐都特色地域文化底蕴。通过多渠道宣传推广泥塑文化，广泛普及非遗知识，弘扬工匠精神，延续民间民俗文脉，拉近大众与传统文化的距离，进一步增强群众文化认同感与民族文化自信。</p></div>
+<div class="value-card"><div class="value-icon">🌾</div><h3>民生振兴</h3>
+<p>携手非遗传承人开展泥塑技能教学，为零工群体提供学习机会，帮助其掌握谋生技艺，稳定增加经济收入。依托非遗产业打通多元发展渠道，联动各地文旅资源拓展发展空间，以非遗赋能基层发展，切实助力群众就业，为乡村振兴注入实用青春力量。</p></div>
+</div></div></section>
+
+<section class="section" id="contact">
+<div class="section-header fade-in"><h2>联系我们</h2><div class="line"></div><p>期待与您携手，共传非遗之美</p></div>
+<div class="fade-in"><div class="contact-cards">
+<div class="contact-card"><div class="contact-icon">💬</div><h4>微信 / WeChat</h4><p>jiangxinliaoyuan</p></div>
+<div class="contact-card"><div class="contact-icon">📞</div><h4>电话 / Phone</h4><p>18882734360</p></div>
+<div class="contact-card"><div class="contact-icon">🎵</div><h4>抖音 / Douyin</h4><p>jiangxinliaoyuan</p></div>
+</div><p class="contact-note">业务详情见实践行动页！合作请注明来意！</p></div></section>
+
+<footer class="footer"><p>© 2026 匠心燎原 — 胡氏泥塑非遗文创团队 · 传承非遗文化 助力乡村振兴</p></footer>
+
+<div class="modal-overlay" id="modalOverlay"><div class="modal" style="position:relative;">
+<button class="modal-close" id="modalClose">×</button>
+<img id="modalImg" src="" alt="" /><div class="modal-body">
+<h3 id="modalName"></h3><p id="modalDesc"></p></div></div></div>
+
+<script>
+var products = [
+  {name:"牡丹胸针1",img:"牡丹胸针1.jpeg",desc:"花瓣层次分明，色彩饱和度高，绿叶衬托更显生机，适合送礼或自用收藏。"},
+  {name:"黄色梅花胸针",img:"黄色梅花胸针.png",desc:"明媚清新，新中式雅致百搭。"},
+  {name:"紫色梅花胸针",img:"紫色梅花胸针.png",desc:"彩花配绿叶，清新灵动，少女感十足。"},
+  {name:"牡丹胸针2",img:"牡丹胸针2.jpeg",desc:"蓝粉两款双花泥塑胸针，花心缀仿珍珠，釉面莹润，清新灵动，新中式温婉雅致。"},
+  {name:"牡丹胸针3",img:"牡丹胸针3.png",desc:"非遗手工牡丹胸针，深蓝花色典雅大气，一针一艺皆是匠心，佩戴国风氛围感十足。"},
+  {name:"红色梅花胸针",img:"红色梅花胸针.jpeg",desc:"非遗手工红梅胸针，凌寒傲骨，坚韧雅致，一枚配饰，可点缀衫衫、背包，随身相伴，藏着独立向上的美好品格。"},
+  {name:"小胸针1",img:"小胸针1.png",desc:"非遗软陶手工制作，层次饱满，配色明艳，衣领包包装饰皆宜。"},
+  {name:"小胸针2",img:"小胸针2.png",desc:"明黄幽蓝双色花饰，手工捏塑纹理自然，色调柔和百搭，通勤日常佩戴都合适。"},
+  {name:"小胸针3",img:"小胸针3.png",desc:"山茶花柔美温婉，艳红梅花热烈雅致，国风雅致，花朵圆润精致，适配汉服与日常服饰，手作独有韵味。"},
+  {name:"发簪1",img:"发簪1.jpeg",desc:"粉白双色泥塑发簪，花心黄蕊，花瓣层叠，釉面莹润，少女心十足，灵动甜美。"},
+  {name:"发簪2",img:"发簪2.jpeg",desc:"紫款单朵重瓣花缀白珠，黄款繁花簇生，造型灵动，色彩明快，质感细腻。"},
+  {name:"白梅花桂花耳环",img:"白梅花桂花耳环.jpeg",desc:"白梅耳钉手工捏制，素雅干净，造型简约精致，低调百搭，日常通勤皆可佩戴。桂花耳钉非遗软陶手工雕琊，小巧玲珑，色泻温润柔和，银针亲肤，温婉显气质。"},
+  {name:"绣球红梅花耳环",img:"绣球红梅花耳环.png",desc:"绣球花耳钉，深紫绣球花造型，花瓣层次丰富，色彩浓郁，国风韵味十足，手工独版不易撞款。红梅耳钉花色艳丽饱满，花蕊细节精致，银针设计，衬得肤色白晰。"},
+  {name:"小雏菊耳环",img:"小雏菊耳环.png",desc:"朱砂红小雏菊造型，小巧明艳，线条简约利落，轻盈不压耳，日常穿搭百搭。"},
+  {name:"恐龙耳环1",img:"恐龙耳环1.jpeg",desc:"白红两款霸王龙造型泥塑耳环，造型软萌可爱，线条流畅，个性吸睛。"},
+  {name:"恐龙耳环2",img:"恐龙耳环2.jpeg",desc:"白红两款三角龙造型泥塑耳环，造型软萌童趣，线条流畅，个性吸睛。"},
+  {name:"兔子耳环",img:"兔子耳环.jpeg",desc:"白红两款兔子造型泥塑耳环，造型软萌可爱，线条圆润流畅，釉面莹润，童趣感拉满。"},
+  {name:"老鼠挂件",img:"老鼠挂件.jpeg",desc:"采用传统红绳流苏搭配萌趣小鼠造型，寓意吉祥招财，整体质感温润，细节精致，极具节日氛围感。"},
+  {name:"兔子挂件",img:"兔子挂件.jpeg",desc:"软萌白兔造型泥塑挂件，粉绳流苏配红珠点缀，造型圆润可爱，寓意吉祥，质感温润治愈。"},
+  {name:"小牛挂件",img:"小牛挂件.jpeg",desc:"萌趣可爱牛造型泥塑挂件，黄绳流苏搭配红珠点缀，造型酣态可掬，寓意牛气满满，质感温润。"},
+  {name:"小羊挂件",img:"小羊挂件.jpeg",desc:"这款小羊泥塑挂件造型软萌立体，粉白配色清新治愈，绳结流苏精致，羊毛肌理还原生动。"},
+  {name:"小猪挂件",img:"小猪挂件.jpeg",desc:"粉嘟嘟的小猪泥塑挂件，白绳配紫流苏，造型圆滚滚软萌可爱，神态灵动讨喜，质感温润治愈。"},
+  {name:"小猴挂件",img:"小猴挂件.jpeg",desc:"酣态可掬的棕色小猴泥塑挂件，黑绳配红珠流苏，神态灵动讨喜，造型圆润饱满，质感温润。"},
+  {name:"黄衣俏格格",img:"黄衣俏格格.png",desc:"纯手工捏制，旗头的花饰流苏、衣摆的刺绣纹样都由手工雕琊，线条圆润流畅，色彩过渡柔和，每一处细节都带着手作的温度，没有机器量产的生硬感。"},
+  {name:"粉衣俏格格",img:"粉衣俏格格.png",desc:"软陶手工捏制，旗头的流苏、衣摆的花绣都刻画细腻，粉蓝配色温柔雅致，把清代少女的娇俏温婉捏得活灵活现。"},
+  {name:"抚琴小仙女",img:"抚琴小仙女.png",desc:"红袍披衣搭配翠绿琴囊，造型层次分明，色彩对比鲜明却不突兀，软陶材质温润细腻，整体气质温婉恬静。"},
+  {name:"暖冬格格",img:"暖冬格格.png",desc:"裹着披风的软萌清宫少女，发髋上的黄花、衣摆的纹样都由手工雕琊，暖黄配色温柔治愈，把冬日里的娇俏温婉捏得活灵活现。"},
+  {name:"西施",img:"西施.png",desc:"手工捏制的发髋、小花发饰、衣料褶皱与浣纱竹篮纹理都刻画清晰，蓝绿色调清新雅致，把古典美人的柔美与恬静展现得淋漓尽致。"},
+  {name:"花间祈福",img:"花间祈福.png",desc:"Q版化的古风仕女造型，双环发髋与花饰细节饱满，粉白汉服层次分明，色彩柔和协调，整体气质娇俏可爱，是兼具观赏性与收藏价值的国风手作摆件。"},
+  {name:"白素贞",img:"白素贞.png",desc:"素白长袍搭配翠色领边，造型简约却细节饱满，软陶材质温润细腻，整体气质温婉恬静。"},
+  {name:"许仙书生",img:"许仙书生.png",desc:"青蓝交领古风长袍，束发书生造型，软陶手工塑形，肌理细腻温润，国风氛围感拉满，桌面收藏小摆件。"},
+  {name:"哪吒",img:"哪吒.png",desc:"俏皮灵动的哪吒形象，自带元气满满的氛围感，手工打磨的细节让造型生动不呆板，既是桌面亮眼的装饰，也藏着手作独有的巧思。"},
+  {name:"敖丙",img:"敖丙.png",desc:"衣袂纹理、眉眼神态皆经手工雕琊，配色清润如冰似玉，方寸之间，尽显东方美学韵味，是兼具温度与质感的手作藏品。"},
+  {name:"贡贡香香",img:"贡贡香香.jpeg",desc:"绿恐龙情侣泥塑，绅士西装款与淑女白裙款造型可爱，细节精致，萌趣治愈。"},
+  {name:"元气小暴龙",img:"元气小暴龙.png",desc:"软陶手工捏制，圆滚滚的造型自带反差萌，红色主调搭配黄色棘刺，牙齿、爪尖细节刻画清晰，把霸王龙的霸气和软萌感巧妙结合。"},
+  {name:"萌趣黄棘龙",img:"萌趣黄棘龙.png",desc:"软萌化的恐龙造型，搭配鲜明的色彩对比，软陶材质温润有质感，摆在桌面既是趣味装饰，也是充满想象力的手作小藏品。"},
+  {name:"副株龙",img:"副栉龙.png",desc:"以史前恐龙副株龙为原型，还原了标志性的橙色头冠、蓝色身体和背部条纹，角色识别度高，充满童趣。"},
+  {name:"萌趣三角龙",img:"萌趣三角龙.png",desc:"Q版三角龙造型圆润可爱，标志性的三只角和颈盾都刻画清晰，绿色主调搭配黄色点缀，色彩明快活泼，自带软萌反差感。"},
+  {name:"咆哮小脑斧",img:"咆哮小脑斧.png",desc:"以老虎为原型，自带“虎虎生威、福气满满”的美好寓意，软陶材质温润有质感，既是可爱的桌面摆件，也是适合节日送礼的吉祥手作。"},
+  {name:"国潮醒狮",img:"国潮醒狮.png",desc:"以传统舞狮为灵感，用软陶还原醒狮的标志性造型，狮头的绒毛纹理、明亮大眼都刻画生动，醒狮舞动，喜庆热闹。"},
+  {name:"福袋招财猫",img:"福袋招财猫.png",desc:"以传统招财猫为原型，搭配手中的红色福袋，自带“招财纳福、财源广进”的美好寓意，是深受喜爱的吉祥摆件。"},
+  {name:"抱竹熊猫",img:"抱竹熊猫.png",desc:"软萌熊猫造型搭配翠绿竹枝，线条圆润饱满，神态软呼呼的，摆在桌面自带治愈感，是兼具观赏性与手作温度的小摆件。"},
+  {name:"憨态土拨鼠",img:"憨态土拨鼠.png",desc:"Q版化的土拨鼠造型，线条圆润饱满，神态软萌讨喜，暖棕色调温润柔和，既是桌面装饰，也是能传递松弛感的创意手作。"},
+  {name:"卡皮巴拉",img:"卡皮巴拉.jpg",desc:"圆滚滚的软萌造型，搭配小背包设计，自带佛系治愈感。软陶手工捏制，圆润的线条和柔和的配色，把水豚的懒慵可爱还原得淋漓尽致。"},
+  {name:"戴帽花生鼠",img:"戴帽花生鼠.png",desc:"以仓鼠为原型打造田园风造型，蓝毛搭配棕帽，配色清新亮眼，软陶材质还原了毛发的柔和质感，既是趣味装饰，也是藏着手作温度的解压小物。"},
+  {name:"兔小姐",img:"兔小姐.jpeg",desc:"粉衣蓝裙古风兔子泥塑，造型软萌灵动，色彩清新明快，细节精致，充满治愈感。"},
+  {name:"小白兔",img:"小白兔.jpeg",desc:"软萌粉白兔子泥塑，圆眼灵动，造型酣态可掬，线条圆润，质感细腻，治愈感拉满。"},
+  {name:"大力花仙",img:"大力花仙.png",desc:"自带元气满满的“反差感”，红绿色调活泼亮眼，既是趣味摆件，也能作为桌面“打工人打气神器”，小众又吸睛。"},
+  {name:"葡萄小卫士",img:"葡萄小卫士.jpg",desc:"采用软陶手工塑形，每颗葡萄的表情都刻画生动，色彩饱满鲜亮，整体造型立体紧凑，手作质感独一无二。"},
+  {name:"阳光向日葵",img:"阳光向日葵.png",desc:"以向日葵为原型打造拟人化造型，两朵花相依的设计温馨又治愈，色彩清新明亮，手工捏制的质感细腻，既是桌面装饰，也是能驱散坏心情的创意手作。"},
+  {name:"功夫萝卜仔",img:"功夫萝卜仔.png",desc:"软陶手工捏制，把萝卜做成了自带“拳击手臂”的趣味形象，坏笑的表情和紧实的肌肉线条反差感拉满，红绿色调鲜亮活泼，摆在桌面超有个性。"},
+  {name:"坏笑石榴仔",img:"坏笑石榴仔.png",desc:"软陶手工捏制，把石榴做成了自带“贱萌坏笑”的拟人形象，圆溜溜的斜眼和整齐的牙齿反差感拉满，橙红配色鲜亮活泼，摆在桌面超吸睛。"},
+  {name:"火龙草",img:"火龙草.png",desc:"以《植物大战僵尸》中的经典植物“火龙草”为原型，还原了绿色龙头造型、黄色尖刺与牙齿、棕色花盆底座，角色识别度极高，完美呈现了游戏中的设定。"},
+  {name:"关圣守财·福盈满门",img:"关公守财，福盈满门.jpg",desc:"承西秦会馆百年盐商信义之魂，沐自贡千年盐都兴盛之「关圣守财·福盈满门」携非遗泥塑匠心而来，融守业聚财、纳福安邦之意，成为盐都独有的吉祥臻品。作品循自贡盐都文脉打造，以“关圣守财”为核心，一手执青龙偃月刀镇守四方气运，一手托金元宝承纳福泽之源，将盐商心中“忠义护业、诚信兴商”的千年信仰凝于掌心，藏“家业兴旺、福盈满门”的美好许期；通体酣态化的红脸绿袍造型，既保留了关公的威严正气，又添几分温润讨喜，暗合“刚柔相济、基业稳固”的中式智慧，一眼便觉安稳妥当。"},
+  {name:"井神必应·盐来运转",img:"井神必应，盐来运转.png",desc:"汲千年盐井之灵气，承盐场鲁班颜蕴山护佑之吉兆，「井神必应·盐来运转」携自贡井盐文化底蕴而来，融纳福转运之意，成盐都专属的吉祥臻品。作品核心形象循盐都文脉打造，以“井神必应”为魂，掌心托凝盐为芯的福盆，陂刻千年井盐的传承印记，藏“盐来运转”的美好许期；通体圆润棱敦实酣态的身形贴合传统吉祥造物的温润质感，暗合“圆融顺遂、福运临门”的中式智慧，一眼便觉亲切讨喜。它躬身低立，双掌虔诚托举盐芯福盆，姿态诚恳灵动，宛若井神降福，将世间好运、财气尽数相赠，让“盐来运转，万事顺意”的吉庆寓意，随千年盐韵款款而至。"},
+  {name:"盐场匠人玩偶",img:"盐场匠人玩偶.png",desc:"这款盐场匠人泥塑，取材自贡千年盐业历史，由胡氏泥塑非遗技艺纯手工制作。人物肩扛盐包，复刻昔日盐场工匠辛勤劳作的模样，承载着自贡盐运文化记忆，展现盐都先辈勤恳质朴、坚韧肯干的精神。软陶塑形色彩自然，人物神态生动鲜活，小小的摆件铭记一方地域历史，把自贡独有的盐文化珍藏起来，独具纪念意义。"},
+  {name:"马上有福",img:"马上有福.jpeg",desc:"以马融福字的创意泥塑浮雕，红韵饱满，线条灵动，木框装裱，寓意马到福至，年味十足。"},
+  {name:"熊猫节节高",img:"熊猫节节高.jpeg",desc:"熊猫抱竹泥塑浮雕，毛发纹理细腻，竹节造型生动，木框装裱雅致，萌趣治愈，工艺精巧。"},
+  {name:"猫咪相框",img:"猫咪相框.jpeg",desc:"猫咪泥塑浮雕，五官精致传神，绒毛纹理刻画逼真，原木框装裱，格调雅致，萌趣尽显。"},
+  {name:"恐龙化石造型泥塑",img:"恐龙化石造型泥塑.jpg",desc:"恐龙化石骨骼纹理刻画精细，仿石质感逼真，还原古生物风貌，工艺精巧。"},
+  {name:"老子出关",img:"老子出关.jpg",desc:"老子骑青牛泥塑，神态仙风道骨，衣褶飘逸自然，青牛肌理逼真，非遗工艺尽显国风神韵。"},
+  {name:"姜太公骑瑞兽",img:"姜太公骑瑞兽泥塑.jpg",desc:"姜太公骑瑞兽泥塑，神态威严传神，瑞兽肌理刻画细腻，色彩层次丰富，非遗工艺尽显国风神韵。"},
+  {name:"自重",img:"自重.jpeg",desc:"该款泥塑人物神态刻画传神，衣褶纹理自然，秤杆等细节精致，还原古风匠人风骨，工艺精湛。"},
+  {name:"江姐·江竹筠",img:"江姐-江竹筠.jpeg",desc:"江竹筠烈士泥塑造型整体坚毅挺拔，神态庄重，刻字清晰，还原英烈风骨，兼具纪念与工艺价值。"},
+  {name:"笔筒",img:"笔筒.jpeg",desc:"软陶材质灵蛇唄蛋造型泥塑，线条圆润，白紫配色灵动，非遗工艺，灵感源于生活，用于生活。"},
+  {name:"枫叶杯垫",img:"枫叶杯垫.jpeg",desc:"以银杏叶和枫叶为原型手工塑形，纹理逼真，渐变色彩自然，瓷质温润，兼具实用与雅致美感。"}
+];
+var nav = document.getElementById('nav');
+var navLinks = document.querySelectorAll('.nav-links a');
+var sections = document.querySelectorAll('.section, .hero');
+window.addEventListener('scroll', function() {
+  if (window.scrollY > 50) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+  var current = '';
+  sections.forEach(function(s) { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  navLinks.forEach(function(a) {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+document.getElementById('navToggle').addEventListener('click', function() { document.getElementById('navLinks').classList.toggle('open'); });
+navLinks.forEach(function(a) { a.addEventListener('click', function() { document.getElementById('navLinks').classList.remove('open'); }); });
+var fadeEls = document.querySelectorAll('.fade-in');
+var observer = new IntersectionObserver(function(entries) { entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
+fadeEls.forEach(function(el) { observer.observe(el); });
+document.getElementById('searchInput').addEventListener('input', function() {
+  var q = this.value.toLowerCase();
+  document.querySelectorAll('.card').forEach(function(c) { c.style.display = c.getAttribute('data-name').toLowerCase().includes(q) ? '' : 'none'; });
+});
+// 动态渲染产品卡片
+(function() {
+  var grid = document.getElementById('productGrid');
+  var html = '';
+  products.forEach(function(p, idx) {
+    html += '<div class="card" data-name="' + p.name + '">';
+    html += '<img src="图片/产品/' + p.img + '" alt="' + p.name + '" loading="lazy" />';
+    html += '<h3>' + p.name + '</h3>';
+    html += '<p>' + p.desc + '</p>';
+    html += '</div>';
+  });
+  grid.innerHTML = html;
+
+  // 搜索功能
+  var searchInput = document.querySelector('#products .search-wrap input');
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      var q = this.value.toLowerCase();
+      grid.querySelectorAll('.card').forEach(function(card) {
+        var name = card.getAttribute('data-name').toLowerCase();
+        card.style.display = name.includes(q) ? '' : 'none';
+      });
+    });
+  }
+})();
+
+var overlay = document.getElementById('modalOverlay');
+document.querySelectorAll('.card').forEach(function(card, idx) {
+  card.addEventListener('click', function() {
+    var p = products[idx];
+    document.getElementById('modalImg').src = '图片/产品/' + p.img;
+    document.getElementById('modalName').textContent = p.name;
+    document.getElementById('modalDesc').textContent = p.desc;
+    overlay.classList.add('active');
+  });
+});
+document.getElementById('modalClose').addEventListener('click', function() { overlay.classList.remove('active'); });
+overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.classList.remove('active'); });
+</script>
+</body></html>
